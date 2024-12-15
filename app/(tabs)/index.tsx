@@ -1,74 +1,65 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Text, View, Image, SafeAreaView } from "react-native";
+import { useState } from "react";
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const TOPBAR_HEIGHT = 250;
 
-export default function HomeScreen() {
+export default function Explore() {
+  const width = Dimensions.get('window').width;
+  const [yOffset, setScrollY] = useState(0);
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: interpolate(yOffset, [-TOPBAR_HEIGHT, 0, TOPBAR_HEIGHT], [1.5, 1, 1]),
+        },
+      ],
+    };
+  });
+
+  const textAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(yOffset, [-TOPBAR_HEIGHT, TOPBAR_HEIGHT / 2, TOPBAR_HEIGHT], [1, 1, 0]),
+    };
+  });
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Animated.View style={[{ height: Math.max(0, TOPBAR_HEIGHT - yOffset) }, headerAnimatedStyle]}>
+        <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }}>
+          {/* Static image to replace the carousel */}
+          <Image 
+            source={{ uri: 'https://via.placeholder.com/500x250' }} 
+            style={{ height: TOPBAR_HEIGHT, width: width }} 
+          />
+        </View>
+
+        <Animated.View style={[textAnimatedStyle]}>
+          <Text style={{ color: "white", paddingTop: TOPBAR_HEIGHT / 3, textAlign: "center", fontSize: 30, fontWeight: "600" }}>
+            Static Image Title
+          </Text>
+        </Animated.View>
+      </Animated.View>
+
+      <View style={{ borderRadius: 20, padding: 10 }}>
+        {/* Static content area */}
+        <Text style={{ textAlign: 'center' }}>Content goes here</Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flexDirection: "row",
+    flex: 1
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  innerContainer: {
+    flex: 1,
+    padding: 10
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  imageContainer: {
+    paddingVertical: 10
+  }
 });
