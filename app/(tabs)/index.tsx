@@ -1,65 +1,54 @@
-import { StyleSheet, Dimensions, Text, View, Image, SafeAreaView } from "react-native";
-import { useState } from "react";
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import React from "react";
+import { SafeAreaView, Text, View, StyleSheet, Image } from "react-native";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
+import { ImageCard } from "@/components/ImageCard";
+import { ThemedView } from "@/components/ThemedView";
+import { FlatList } from "react-native-gesture-handler";
 
 const TOPBAR_HEIGHT = 250;
 
 export default function Explore() {
-  const width = Dimensions.get('window').width;
-  const [yOffset, setScrollY] = useState(0);
+  const wallpapers = useWallpapers();
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: interpolate(yOffset, [-TOPBAR_HEIGHT, 0, TOPBAR_HEIGHT], [1.5, 1, 1]),
-        },
-      ],
-    };
-  });
-
-  const textAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(yOffset, [-TOPBAR_HEIGHT, TOPBAR_HEIGHT / 2, TOPBAR_HEIGHT], [1, 1, 0]),
-    };
-  });
+  // Check if wallpapers is not empty
+  if (!wallpapers || wallpapers.length === 0) {
+    return <Text>No wallpapers available.</Text>;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Animated.View style={[{ height: Math.max(0, TOPBAR_HEIGHT - yOffset) }, headerAnimatedStyle]}>
-        <View style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }}>
-          {/* Static image to replace the carousel */}
-          <Image 
-            source={{ uri: 'https://via.placeholder.com/500x250' }} 
-            style={{ height: TOPBAR_HEIGHT, width: width }} 
-          />
-        </View>
+      <ParallaxScrollView
+        headerBackgroundColor={{ dark: "black", light: "white" }}
+        headerImage={<Image style={{ flex: 1 }} source={{ uri: String(wallpapers[0]?.url ?? "") }} />}
+      >
 
-        <Animated.View style={[textAnimatedStyle]}>
-          <Text style={{ color: "white", paddingTop: TOPBAR_HEIGHT / 3, textAlign: "center", fontSize: 30, fontWeight: "600" }}>
-            Static Image Title
-          </Text>
-        </Animated.View>
-      </Animated.View>
-
-      <View style={{ borderRadius: 20, padding: 10 }}>
-        {/* Static content area */}
-        <Text style={{ textAlign: 'center' }}>Content goes here</Text>
-      </View>
+        <ThemedView style={styles.container}>
+          <ThemedView style={styles.incontainer}>
+            <FlatList
+              data={wallpapers.filter((_, index) => index % 2 === 0)}
+              renderItem={({ item }) => <ImageCard wallpaper={item} />}
+              keyExtractor={(item) => item.name as string}
+              contentContainerStyle={{ padding: 16 }}
+            />
+            
+          </ThemedView>
+        
+        </ThemedView>
+      </ParallaxScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
     flexDirection: "row",
-    flex: 1
-  },
-  innerContainer: {
     flex: 1,
-    padding: 10
   },
-  imageContainer: {
-    paddingVertical: 10
-  }
+  incontainer: {
+    display: "flex",
+    padding: 1,
+    flex: 0.5,
+  },
 });
