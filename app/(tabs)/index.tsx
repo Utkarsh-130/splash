@@ -33,6 +33,15 @@ export default function Explore() {
             />
             
           </ThemedView>
+          <ThemedView style={styles.incontainer}>
+            <FlatList
+              data={wallpapers.filter((_, index) => index % 2 !== 0)}
+              renderItem={({ item }) => <ImageCard wallpaper={item} />}
+              keyExtractor={(item) => item.name as string}
+              contentContainerStyle={{ padding: 16 }}
+            />
+            
+          </ThemedView>
         
         </ThemedView>
       </ParallaxScrollView>
