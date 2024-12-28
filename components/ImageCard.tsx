@@ -1,55 +1,41 @@
-import { Wallpaper } from "@/hooks/useWallpapers";
-import { View, StyleSheet, Image, useColorScheme, Pressable } from "react-native";
-import { ThemedText } from "./ThemedText";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Colors } from '@/constants/Colors';
+import React from "react";
+import { TouchableOpacity, Image, StyleSheet, View, Text } from "react-native";
 
-export function ImageCard({ wallpaper, onPress }: {
-    wallpaper: Wallpaper,
-    onPress: () => void
-}) {
-    const theme = useColorScheme() ?? 'light';
-
-    return <Pressable onPress={onPress}>
-        <View>
-            <Image source={{uri: wallpaper.url}} style={styles.image} />
-            <View style={styles.labelContainer}>
-                <ThemedText style={styles.label}>{wallpaper.name}</ThemedText>
-                <View style={styles.iconContainer}>
-                    <Ionicons
-                        name={'heart'}
-                        size={18}
-                        color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
-                    />
-                </View>
-            </View>
-        </View>
-    </Pressable>
+interface ImageCardProps {
+  wallpaper: {
+    url: string;
+    name: string;
+  };
+  onPress: () => void;
 }
 
+export const ImageCard: React.FC<ImageCardProps> = ({ wallpaper, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.card}>
+      <Image source={{ uri: wallpaper.url }} style={styles.image} />
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{wallpaper.name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
-    iconContainer: {
-        display: "flex",
-        justifyContent: "center"
-    },
-    image: {
-        flex: 1,
-        height: 220,
-        borderRadius: 20
-    },
-    label: {
-        color: "white"
-    },
-    labelContainer: {
-        position: "absolute",
-        bottom: 0,
-        width: "100%",
-        backgroundColor: "rgba(0, 0 , 0, 0.5)",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        padding: 5,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        
-    }
-})
+  card: {
+    margin: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  textContainer: {
+    padding: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+  },
+});

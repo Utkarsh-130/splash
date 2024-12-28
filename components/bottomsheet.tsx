@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Image, StyleSheet, useColorScheme } from 'react-native';
+import { View, Image, StyleSheet, useColorScheme, Button, Pressable } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Wallpaper } from '@/hooks/useWallpapers';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '@/constants/Colors';
 import { ThemedView } from './ThemedView';
-
+import { Text } from 'react-native';
 interface DownloadSheetProps {
   onClose: () => void;
   wallpaper: Wallpaper;
@@ -55,12 +55,46 @@ export const DownloadSheet: React.FC<DownloadSheetProps> = ({ onClose, wallpaper
               />
             </View>
           </View>
+          <DownloadButton/>
         </ThemedView>
       </BottomSheetView>
     </BottomSheet>
   );
 };
 
+
+function DownloadButton() {
+  return (
+    <Pressable
+      style={{
+        
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 16,
+        margin: 16,
+        padding:12,
+        flexDirection: 'row',
+        shadowColor: "#995ff1",
+        backgroundColor: "#a690fe",
+      }}
+    >
+      <Ionicons
+        name={'download'}
+        size={24}
+        color="white"
+        fontweight="bold"
+      />
+      <Text
+        style={{
+          fontSize: 28,
+          color: "white",
+        }}
+      >
+        Download
+      </Text>
+    </Pressable>
+  );
+}
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,

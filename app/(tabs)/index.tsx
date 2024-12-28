@@ -5,7 +5,7 @@ import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
 import { ImageCard } from "@/components/ImageCard";
 import { ThemedView } from "@/components/ThemedView";
 import { FlatList } from "react-native-gesture-handler";
-import DownloadSheet from '@/components/bottomsheet'; // Correct import statement
+import { DownloadSheet } from '@/components/bottomsheet'; // Correct import statement
 
 const TOPBAR_HEIGHT = 250;
 
