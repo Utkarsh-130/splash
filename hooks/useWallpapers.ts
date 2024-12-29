@@ -1,6 +1,7 @@
 export interface Wallpaper {
   name: string;
   url: string;
+   onPress?: () => void;
 }
 
 export function useWallpapers(): Wallpaper[] {

@@ -6,6 +6,7 @@ import { ImageCard } from "@/components/ImageCard";
 import { ThemedView } from "@/components/ThemedView";
 import { FlatList } from "react-native-gesture-handler";
 import { DownloadSheet } from '@/components/bottomsheet'; // Correct import statement
+import { SplitView } from "@/components/SplitView";
 
 const TOPBAR_HEIGHT = 250;
 
@@ -36,38 +37,12 @@ export default function Explore() {
         headerBackgroundColor={{ dark: "black", light: "white" }}
         headerImage={<Image style={{ flex: 1 }} source={{ uri: String(wallpapers[0]?.url ?? "") }} />}
       >
-        <ThemedView style={styles.container}>
-          <ThemedView style={styles.incontainer}>
-            <FlatList
-              data={wallpapers.filter((_, index) => index % 2 === 0)}
-              renderItem={({ item }) => (
-                <TouchableOpacity onLongPress={() => handleLongPress(item.url)}>
-                  <ImageCard wallpaper={item} onPress={() => handlePress(item)} />
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item.name as string}
-              contentContainerStyle={{ padding: 16 }}
-            />
-          </ThemedView>
-          <ThemedView style={styles.incontainer}>
-            <FlatList
-              data={wallpapers.filter((_, index) => index % 2 !== 0)}
-              renderItem={({ item }) => (
-                <TouchableOpacity onLongPress={() => handleLongPress(item.url)}>
-                  <ImageCard wallpaper={item} onPress={() => handlePress(item)} />
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item.name as string}
-              contentContainerStyle={{ padding: 16 }}
-            />
-          </ThemedView>
-        </ThemedView>
+       <SplitView wallpapers={[]}/>
       </ParallaxScrollView>
 
       <Modal visible={modalVisible} transparent={true} animationType="fade">
         <View style={styles.modalContainer}>
           <TouchableOpacity style={styles.modalBackground} onPress={() => setModalVisible(false)}>
-            {selectedImage && <Image source={{ uri: selectedImage }} style={styles.modalImage} />}
           </TouchableOpacity>
         </View>
       </Modal>
