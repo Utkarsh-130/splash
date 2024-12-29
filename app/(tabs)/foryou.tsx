@@ -2,11 +2,17 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
+import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
 // Import screens
 import HomeScreen from '../upbar/HomeScreen';
 import SettingsScreen from '../upbar/SettingsScreen';
 import SuggestedScreen from '../upbar/SuggestedScreen';
+import { SplitView } from '@/components/SplitView';
+
+import { ImageCard } from "@/components/ImageCard";
+import { ThemedView } from "@/components/ThemedView";
+import { FlatList } from "react-native-gesture-handler";
+import { DownloadSheet } from '@/components/bottomsheet'; // Correct import statement
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -26,9 +32,9 @@ export default function MyTabs() {
           },
         }}
       >
-        <Tab.Screen name="Library" component={HomeScreen} />
-        <Tab.Screen name="Liked" component={SettingsScreen} />
-        <Tab.Screen name="Suggested" component={SuggestedScreen} />
+        <Tab.Screen name="Library" component={LibraryScreen} />
+        <Tab.Screen name="Liked" component={LikedScreen} />
+        <Tab.Screen name="Suggested" component={Suggested} />
       </Tab.Navigator>
     </SafeAreaView>
   );
@@ -36,25 +42,28 @@ export default function MyTabs() {
 
 // Example of a simple screen (for testing purposes)
 function LibraryScreen() {
+  const  wallpapersn  = useWallpapers();
   return (
     <View style={styles.container}>
-      <Text>Library Screen</Text>
+      <SplitView wallpapers={wallpapersn} />
     </View>
   );
 }
 
 function LikedScreen() {
+  const  wallpapersn  = useWallpapers();
   return (
     <View style={styles.container}>
-      <Text>Liked Screen</Text>
+      <SplitView wallpapers={wallpapersn} />
     </View>
   );
 }
 
 function Suggested() {
+  const  wallpapersn  = useWallpapers();
   return (
     <View style={styles.container}>
-      <Text>Suggested Screen</Text>
+      <SplitView wallpapers={wallpapersn} />
     </View>
   );
 }

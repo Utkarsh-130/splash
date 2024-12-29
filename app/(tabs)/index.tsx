@@ -37,7 +37,8 @@ export default function Explore() {
         headerBackgroundColor={{ dark: "black", light: "white" }}
         headerImage={<Image style={{ flex: 1 }} source={{ uri: String(wallpapers[0]?.url ?? "") }} />}
       >
-       <SplitView wallpapers={[]}/>
+       <SplitView wallpapers={wallpapers} />
+
       </ParallaxScrollView>
 
       <Modal visible={modalVisible} transparent={true} animationType="fade">
@@ -60,16 +61,7 @@ export default function Explore() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    flex: 1,
-  },
-  incontainer: {
-    display: "flex",
-    padding: 1,
-    flex: 0.5,
-  },
+  
   modalContainer: {
     flex: 1,
     justifyContent: "center",
@@ -82,9 +74,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  modalImage: {
-    width: "90%",
-    height: "90%",
-    resizeMode: "contain",
-  },
+ 
 });
