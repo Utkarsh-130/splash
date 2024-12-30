@@ -1,88 +1,141 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, Pressable, StatusBar } from 'react-native';
-import { DownloadSheet } from '@/components/bottomsheet';
-import { useWallpapers, Wallpaper } from '@/hooks/useWallpapers';
-import { Ionicons } from '@expo/vector-icons';
+// import { DownloadSheet } from "@/components/bottomsheet";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
+import { Button, Pressable, Text, View, useColorScheme, StyleSheet, Appearance } from "react-native";
 import { Colors } from '@/constants/Colors';
-import { ThemedText } from '@/components/ThemedText';
-
-export default function Accounts() {
-  const [pictureOpen, setPictureOpen] = useState(false);
-  const theme = 'light'; // or 'dark', depending on your theme logic
-  const wallpapers = useWallpapers();
-  const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
-
-
-
- return (
-
-    <SafeAreaView style={styles.container}>
-       
-      <View style={styles.header}>
-        <ThemedText style={{paddingTop:20,paddingLeft:20, fontSize: 32, fontWeight: 'bold' }}>Splash</ThemedText>
-        <ThemedText style={{paddingLeft:20, fontSize: 18, fontWeight: 'light' }}>Sign in to save data </ThemedText>
-      </View>
-         
-      
-
-      <View style={styles.vw}>
-        {/* Google Sign-In Button */}
-        <AuthButton
-          label="Sign in"
-icon={<Ionicons name="logo-google" size={24} color={theme==="light"? Colors.light.icon:Colors.dark.icon} />}
-        />
-
-        {/* Apple Sign-In Button */}
-        <AuthButton
-          label="Sign in "
-          icon={<Ionicons name="logo-apple" size={24} color={theme==="light"? Colors.light.icon:Colors.dark.icon} />}
-        />
-      </View>
-    </SafeAreaView>
-  );
-}
-interface AuthButtonProps {
-  label: string;
-  icon: any;
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { ScrollView } from "react-native-gesture-handler";
+import { ThemedSafeAreaView } from "@/components/ThemedSafeAreaView";
+import { FC } from "react";
+import React from "react";
+export default function account() {
+    return <ThemedSafeAreaView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
+            <Header />
+            <ThemedView style={{ flex: 1 }}>
+                <LoginButtons />
+                <ThemeSelector />
+                <About />
+            </ThemedView>
+        </ScrollView>
+    </ThemedSafeAreaView>
 }
 
-function AuthButton({ label, icon }: AuthButtonProps) {
-  return (
-    <Pressable
-      style={{
-        
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 16,
-        margin: 16,
-        padding:12,
-        flexDirection: 'row',
- 
-        backgroundColor: "#a690fe",
-      }}
-    >
-    {icon}
-    <Text style={{
-      fontSize: 28,
-      color: "white",
-      fontWeight: "bold"
-    }}>{label}</Text>
-   
- 
-    
+function About() {
+    return <ThemedView style={styles.margin}>
+        <ThemedText style={styles.textBig}>About</ThemedText>
+        <ThemedView style={{ marginTop: 10 }}>
+            <Pressable>
+                <ThemedText style={{margin: 10, fontSize: 18}}>Accont</ThemedText>
+            </Pressable>
+            <Pressable>
+                <ThemedText style={{margin: 10, fontSize: 18}}>Privacy Policy</ThemedText>
+            </Pressable>
+            <Pressable>
+                <ThemedText style={{margin: 10, fontSize: 18}}>Terms of Service</ThemedText>
+            </Pressable>
+            <Pressable>
+                <ThemedText style={{margin: 10, fontSize: 18}}>Licenses</ThemedText>
+            </Pressable>
+        </ThemedView>
+    </ThemedView>
+}
+
+function ThemeSelector() {
+    return <ThemedView style={styles.margin}>
+        <ThemedText style={styles.textBig}>Settings</ThemedText>
+        <ThemedText>Theme</ThemedText>
+        <ThemedView style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+            <ThemeButton title={"Dark"} selected={false} colorScheme="dark"/>
+            <ThemeButton title={"Light"} selected={false} colorScheme="light" />
+            <ThemeButton title={"System"} selected={false} colorScheme={null} />
+        </ThemedView>
+    </ThemedView>
+}
+
+function ThemeButton({title, selected, colorScheme}: {selected: boolean, title: string, colorScheme: "dark" | "light" | null }) {
+    const theme = useColorScheme();
+
+    return <Pressable style={{padding: 10,
+        borderWidth: 1,
+        borderColor: theme === 'light' ? Colors.light.text : Colors.dark.icon, borderRadius: 5, flex: 0.3}} onPress={() => {
+        Appearance.setColorScheme(colorScheme)
+    }}>
+        <ThemedText style={{ width: "100%", textAlign: "center"}}>{title}</ThemedText>
     </Pressable>
-  );
+}
+
+function LoginButtons() {
+    const theme = useColorScheme() ?? 'light';
+    return <>
+        <AuthButton 
+            label={"Sign in"} 
+            icon={<Ionicons
+                name={'logo-apple'}
+                size={24}
+                color={theme === 'light' ? Colors.light.text : Colors.dark.icon}
+            />}
+            />
+            <AuthButton 
+            label={"Sign in"} 
+            icon={<Ionicons
+                name={'logo-google'}
+                size={24}
+                color={theme === 'light' ? Colors.light.text : Colors.dark.icon}
+            />}
+            />
+    </>
+}
+
+function Header() {
+    return <ThemedView style={styles.topbar}>
+        <ThemedText style={styles.textBig}>Splash</ThemedText>
+        <ThemedText>Sign in to save your data</ThemedText>
+    </ThemedView>
+}
+
+function AuthButton({ label, icon }: {
+    label: string,
+    icon: any
+}) {
+    const theme = useColorScheme() ?? 'light';
+
+    return <Pressable style={{
+      backgroundColor: theme,
+      padding: 10,
+      marginHorizontal: 40,
+      marginVertical: 5,
+      justifyContent: "center",
+      flexDirection: "row",
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: theme === 'light' ? Colors.light.text : Colors.dark.icon
+    }}>
+      {icon}
+      <ThemedText style={{
+        fontSize: 20,
+        fontWeight: "600",
+      }}>{label}</ThemedText>
+    </Pressable>
 }
 
 const styles = StyleSheet.create({
-  header: {},
-  container: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  vw: {
-    flex: 1,
-   
+    textBig: {
+        fontSize: 25,
+        fontWeight: "600"
+    },
+    topbar: {
+        padding: 20
+    },
+    themeSelectorContainer: {
+        flex: 1
+    },
+    themeSelectorChild: {
+
+    },
+    margin: {
+        padding: 20
+    }
     
-  },
 });
