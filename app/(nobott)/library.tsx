@@ -8,6 +8,6 @@ export default function Library() {
  return <View>
     <SplitView wallpapers={wallpapers}/>
     </View>
-}
+}  
 
 const styles = StyleSheet.create({})

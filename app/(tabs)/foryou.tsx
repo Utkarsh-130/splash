@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
+import { useLibrary, useLikedWallpapers, useSuggestedWallpapers, useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
 // Import screens
 import HomeScreen from '../upbar/HomeScreen';
 import SettingsScreen from '../upbar/SettingsScreen';
@@ -42,7 +42,7 @@ export default function MyTabs() {
 
 // Example of a simple screen (for testing purposes)
 function LibraryScreen() {
-  const  wallpapersn  = useWallpapers();
+  const  wallpapersn  = useLibrary();
   return (
     <View style={styles.container}>
       <SplitView wallpapers={wallpapersn} />
@@ -51,7 +51,7 @@ function LibraryScreen() {
 }
 
 function LikedScreen() {
-  const  wallpapersn  = useWallpapers();
+  const  wallpapersn  = useLikedWallpapers();
   return (
     <View style={styles.container}>
       <SplitView wallpapers={wallpapersn} />
@@ -60,7 +60,7 @@ function LikedScreen() {
 }
 
 function Suggested() {
-  const  wallpapersn  = useWallpapers();
+  const  wallpapersn  = useSuggestedWallpapers();
   return (
     <View style={styles.container}>
       <SplitView wallpapers={wallpapersn} />
