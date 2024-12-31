@@ -53,11 +53,11 @@ export const ImageCard: React.FC<ImageCardProps> = ({ wallpaper, onPress }) => {
 const styles = StyleSheet.create({
   card: {
     margin: 10,
-    borderRadius: 10,
+    borderRadius: 18,
     overflow: "hidden",
   },
   image: {
-    width: "100%",
+    width: "120%",
     height: 200,
   },
   textContainer: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useLibrary, useLikedWallpapers, useSuggestedWallpapers, useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
@@ -13,18 +13,21 @@ import { ImageCard } from "@/components/ImageCard";
 import { ThemedView } from "@/components/ThemedView";
 import { FlatList } from "react-native-gesture-handler";
 import { DownloadSheet } from '@/components/bottomsheet'; // Correct import statement
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const Tab = createMaterialTopTabNavigator();
+export default function foryou() {
+  const theme = useColorScheme()?? "light";
 
-export default function MyTabs() {
   return (
     <SafeAreaView style={styles.container}>
+      const theme = 'light'; // Define the theme variable
       <Tab.Navigator
-        style={{ flex: 1 }}
+        style={{ flex: 1 ,backgroundColor: Colors[theme].tint}}
         screenOptions={{
-          tabBarActiveTintColor: 'blue', // Active tab color
+          tabBarActiveTintColor:  Colors[theme].background,
           tabBarStyle: {
-            backgroundColor: 'white', // Tab bar background color
+            backgroundColor: Colors[theme].indicator, // Tab bar background color
           },
           tabBarIndicatorStyle: {
             backgroundColor: 'blue', // Tab indicator color
